@@ -1,0 +1,20 @@
+### Instruction:
+What is the capital of France?
+
+### Response:
+The capital of France is Paris.</s>
+
+### Instruction:
+What is the population?
+
+### Response:
+Paris has a population of approximately 2.2 million people.</s>
+
+### System:
+You are a helpful assistant.
+
+### Instruction:
+Tell me about AI.
+
+### Response:
+AI stands for Artificial Intelligence, a field of computer science.</s>

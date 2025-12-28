@@ -1,0 +1,4 @@
+{"text":"USER: Hello\nASSISTANT: Hi! How can I help you?</s>"}
+{"text":"USER: What is AI?\nASSISTANT: AI stands for Artificial Intelligence.</s>"}
+{"text":"SYSTEM: You are a helpful assistant.\nUSER: Explain quantum computing.\nASSISTANT: Quantum computing uses quantum mechanics principles to process information.</s>"}
+{"text":"USER: Write a Python function to add two numbers.\nASSISTANT: def add(a, b):\n    return a + b</s>"}

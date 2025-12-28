@@ -1,0 +1,4 @@
+{"text":"<s>[INST] Hello [/INST] Hi! How can I help you?</s>"}
+{"text":"<s>[INST] What is AI? [/INST] AI stands for Artificial Intelligence.</s>"}
+{"text":"<s>[INST] Explain quantum computing. [/INST] Quantum computing uses quantum mechanics principles to process information.</s>"}
+{"text":"<s>[INST] Write a Python function to add two numbers. [/INST] def add(a, b):\n    return a + b</s>"}

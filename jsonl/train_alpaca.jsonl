@@ -1,0 +1,4 @@
+{"text":"### Instruction:\nHello\n\n### Response:\nHi! How can I help you?</s>"}
+{"text":"### Instruction:\nWhat is AI?\n\n### Response:\nAI stands for Artificial Intelligence.</s>"}
+{"text":"### System:\nYou are a helpful assistant.\n\n### Instruction:\nExplain quantum computing.\n\n### Response:\nQuantum computing uses quantum mechanics principles to process information.</s>"}
+{"text":"### Instruction:\nWrite a Python function to add two numbers.\n\n### Response:\ndef add(a, b):\n    return a + b</s>"}

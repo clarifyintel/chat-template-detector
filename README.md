@@ -1,0 +1,63 @@
+# Chat Template Detector
+
+Detect chat template mismatches between training and inference in LLM fine-tuning.
+
+## The Problem
+
+You fine-tune an LLM with one chat template format. You run inference with a different format. The model outputs garbage. No error message. Hours wasted debugging.
+
+This tool catches template mismatches before they waste your time and GPU credits.
+
+## Installation
+
+```bash
+pip install chat-template-detector
+```
+
+## Usage
+
+```bash
+# Validate training data against inference config
+chat-template-detector validate \
+  --training-file train.jsonl \
+  --inference-config config.yaml
+
+# Check specific model template
+chat-template-detector check \
+  --model meta-llama/Llama-2-7b-chat-hf \
+  --training-file train.jsonl
+```
+
+## Common Issues Detected
+
+- ChatML vs Llama format mismatch
+- Missing special tokens
+- Incorrect token ordering
+- BOS/EOS token mismatches
+- Role name inconsistencies
+
+## Examples
+
+Training file uses ChatML:
+```json
+{"messages": [{"role": "user", "content": "Hello"}, {"role": "assistant", "content": "Hi"}]}
+```
+
+Inference expects Llama format:
+```
+<s>[INST] Hello [/INST] Hi</s>
+```
+
+Detector catches this mismatch and shows exactly what's wrong.
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md)
+
+## License
+
+MIT License - see [LICENSE](LICENSE) for details
+
+## Author
+
+Built by [ClarifyIntel](https://clarifyintel.com) - Making AI and DevOps accessible

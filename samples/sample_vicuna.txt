@@ -1,0 +1,7 @@
+USER: What is the capital of France?
+ASSISTANT: The capital of France is Paris.</s>
+USER: What is the population?
+ASSISTANT: Paris has a population of approximately 2.2 million people.</s>
+SYSTEM: You are a helpful assistant.
+USER: Tell me about AI.
+ASSISTANT: AI stands for Artificial Intelligence, a field of computer science.</s>

@@ -1,0 +1,7 @@
+<s>[INST] What is the capital of France? [/INST] The capital of France is Paris.</s>
+<s>[INST] What is the population? [/INST] Paris has a population of approximately 2.2 million people.</s>
+<s>[INST] <<SYS>>
+You are a helpful assistant.
+<</SYS>>
+
+Tell me about AI. [/INST] AI stands for Artificial Intelligence, a field of computer science.</s>

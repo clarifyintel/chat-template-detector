@@ -1,0 +1,3 @@
+{"text": "<s>[INST] What is the capital of France? [/INST] The capital of France is Paris.</s>"}
+{"text": "<s>[INST] Explain quantum computing. [/INST] Quantum computing uses quantum mechanics to process information.</s>"}
+{"text": "<s>[INST] <<SYS>>\nYou are a helpful assistant.\n<</SYS>>\n\nHello [/INST] Hi there!</s>"}

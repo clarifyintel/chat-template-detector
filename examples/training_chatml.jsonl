@@ -1,0 +1,3 @@
+{"text": "<|im_start|>user\nWhat is the capital of France?<|im_end|>\n<|im_start|>assistant\nThe capital of France is Paris.<|im_end|>"}
+{"text": "<|im_start|>user\nExplain quantum computing.<|im_end|>\n<|im_start|>assistant\nQuantum computing uses quantum mechanics to process information.<|im_end|>"}
+{"text": "<|im_start|>system\nYou are a helpful assistant.<|im_end|>\n<|im_start|>user\nHello<|im_end|>\n<|im_start|>assistant\nHi there!<|im_end|>"}

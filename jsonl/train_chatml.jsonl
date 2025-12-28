@@ -1,0 +1,4 @@
+{"text":"<|im_start|>user\nHello<|im_end|>\n<|im_start|>assistant\nHi! How can I help you?<|im_end|>"}
+{"text":"<|im_start|>user\nWhat is AI?<|im_end|>\n<|im_start|>assistant\nAI stands for Artificial Intelligence.<|im_end|>"}
+{"text":"<|im_start|>system\nYou are a helpful assistant.<|im_end|>\n<|im_start|>user\nExplain quantum computing.<|im_end|>\n<|im_start|>assistant\nQuantum computing uses quantum mechanics principles to process information.<|im_end|>"}
+{"text":"<|im_start|>user\nWrite a Python function to add two numbers.<|im_end|>\n<|im_start|>assistant\ndef add(a, b):\n    return a + b<|im_end|>"}
