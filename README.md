@@ -53,6 +53,28 @@ Inference expects Llama format:
 
 Detector catches this mismatch and shows exactly what's wrong.
 
+## CI/CD Integration
+
+Add to your training pipeline to catch template mismatches before training:
+
+```yaml
+# GitHub Actions
+- name: Validate chat templates
+  run: |
+    pip install chat-template-detector
+    chat-template-detector validate \
+      --training-file data/train.jsonl \
+      --model ${{ matrix.model }}
+```
+
+```bash
+# GitLab CI / Jenkins / Any CI
+pip install chat-template-detector
+chat-template-detector validate \
+  --training-file train.jsonl \
+  --inference-config config.yaml
+```
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md)
