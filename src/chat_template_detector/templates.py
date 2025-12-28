@@ -80,6 +80,7 @@ MODEL_TEMPLATE_MAPPING = {
     "meta-llama/Llama-2": "llama-2",
     "mistralai/Mistral": "mistral",
     "mistralai/Mixtral": "mistral",
+    "unsloth/mistral": "mistral",
     "lmsys/vicuna": "vicuna",
     "tatsu-lab/alpaca": "alpaca",
 }

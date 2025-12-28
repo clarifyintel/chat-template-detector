@@ -102,6 +102,7 @@ def validate(training_file: str, inference_config: Optional[str], model: Optiona
     mismatches = detector.compare_templates(training_template, inference_template)
     
     # Output results
+    click.echo("")
     if format == "json":
         output = {
             "training_template": training_template,

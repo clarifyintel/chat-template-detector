@@ -74,8 +74,9 @@ class TemplateDetector:
             
             # Check if it's messages format
             if "messages" in example:
-                # This is messages format - need to check how it's being formatted
-                pass
+                # Messages format detected - will be formatted at training time
+                # Return "messages" as a special marker
+                return "messages"
         
         return detected_template
     
@@ -120,6 +121,30 @@ class TemplateDetector:
                     message="Could not detect template format in either training or inference config"
                 )
             )
+            return self.mismatches
+        
+        # Handle "messages" format - it will use model's default template
+        if training_template == "messages":
+            if inference_template:
+                self.mismatches.append(
+                    TemplateMismatch(
+                        severity="info",
+                        field="template",
+                        expected=f"{inference_template} (via model default)",
+                        actual=inference_template,
+                        message=f"Training uses messages format. Model will apply {inference_template} template automatically."
+                    )
+                )
+            else:
+                self.mismatches.append(
+                    TemplateMismatch(
+                        severity="warning",
+                        field="template",
+                        expected="messages (model default)",
+                        actual="Unknown",
+                        message="Training uses messages format. Verify model applies correct template during training."
+                    )
+                )
             return self.mismatches
         
         if training_template != inference_template:
