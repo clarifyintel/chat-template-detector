@@ -2,6 +2,7 @@
 
 import json
 import sys
+import time
 from pathlib import Path
 from typing import Optional
 
@@ -46,22 +47,24 @@ def validate(training_file: str, inference_config: Optional[str], model: Optiona
     """Validate training data against inference configuration."""
     detector = TemplateDetector()
     
-    # Analyze training file
-    click.echo("Analyzing training file...")
+    # Step 1: Analyze training file
+    start_time = time.time()
     try:
         training_template = detector.validate_training_file(training_file)
+        elapsed = time.time() - start_time
         if training_template:
-            click.echo(f"Detected training template: {training_template}")
+            click.echo(f"1: [{elapsed:.1f}s] Analyzing training file, detected training template: {training_template}")
         else:
-            click.echo("Warning: Could not auto-detect training template")
+            click.echo(f"1: [{elapsed:.1f}s] Analyzing training file, could not detect template")
     except Exception as e:
-        click.echo(f"Error analyzing training file: {e}", err=True)
+        click.echo(f"Error: {e}", err=True)
         sys.exit(1)
     
-    # Analyze inference config
+    # Step 2: Check model or config
     inference_template = None
+    start_time = time.time()
+    
     if inference_config:
-        click.echo("Analyzing inference config...")
         try:
             with open(inference_config, 'r', encoding='utf-8') as f:
                 if inference_config.endswith('.yaml') or inference_config.endswith('.yml'):
@@ -74,10 +77,11 @@ def validate(training_file: str, inference_config: Optional[str], model: Optiona
                 sys.exit(1)
             
             inference_template = detector.validate_inference_config(config)
+            elapsed = time.time() - start_time
             if inference_template:
-                click.echo(f"Detected inference template: {inference_template}")
+                click.echo(f"2: [{elapsed:.1f}s] Checking config: {inference_config}, validating template consistency...")
             else:
-                click.echo("Warning: Could not auto-detect inference template")
+                click.echo(f"2: [{elapsed:.1f}s] Checking config: {inference_config}, could not detect template")
         except FileNotFoundError:
             click.echo(f"Error: Config file not found: {inference_config}", err=True)
             sys.exit(1)
@@ -88,21 +92,18 @@ def validate(training_file: str, inference_config: Optional[str], model: Optiona
             click.echo(f"Error: Invalid JSON format: {e}", err=True)
             sys.exit(1)
         except Exception as e:
-            click.echo(f"Error analyzing inference config: {e}", err=True)
+            click.echo(f"Error: {e}", err=True)
             sys.exit(1)
     elif model:
-        click.echo(f"Checking model: {model}")
         from .templates import detect_template_from_model_name
         inference_template = detect_template_from_model_name(model)
-        if inference_template:
-            click.echo(f"Detected model template: {inference_template}")
+        elapsed = time.time() - start_time
+        click.echo(f"2: [{elapsed:.1f}s] Checking model: {model}, validating template consistency...")
     
     # Compare templates
-    click.echo("\nValidating template consistency...")
     mismatches = detector.compare_templates(training_template, inference_template)
     
     # Output results
-    click.echo("")
     if format == "json":
         output = {
             "training_template": training_template,
@@ -120,24 +121,31 @@ def validate(training_file: str, inference_config: Optional[str], model: Optiona
         }
         click.echo(json.dumps(output, indent=2))
     else:
-        click.echo("\nResults:")
-        click.echo("-" * 60)
-        for mismatch in mismatches:
-            color = {
-                "error": "red",
-                "warning": "yellow",
-                "info": "green"
-            }.get(mismatch.severity, "white")
-            click.echo(click.style(str(mismatch), fg=color))
-        click.echo("-" * 60)
+        # Step 3: Results
+        has_errors = any(m.severity == "error" for m in mismatches)
+        
+        if has_errors:
+            click.echo("3: Results: Validation FAILED")
+        else:
+            click.echo("3: Results: Validation PASSED")
+        
+        # Show errors
+        errors = [m for m in mismatches if m.severity == "error"]
+        if errors:
+            for e in errors:
+                click.echo(click.style(f"   Error: {e.message}", fg="red"))
+        
+        # Show warnings dimmed
+        warnings = [m for m in mismatches if m.severity == "warning"]
+        if warnings:
+            for w in warnings:
+                click.echo(click.style(f"   Warning: {w.message}", fg="white", dim=True))
+                click.echo(click.style(f"   File: {training_file}", fg="white", dim=True))
         
         # Exit code
-        has_errors = any(m.severity == "error" for m in mismatches)
         if has_errors:
-            click.echo("\nValidation FAILED: Template mismatches detected")
             sys.exit(1)
         else:
-            click.echo("\nValidation PASSED")
             sys.exit(0)
 
 
