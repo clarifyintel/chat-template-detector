@@ -173,11 +173,13 @@ def check(file_path: str, template: Optional[str]):
     """Check a single file for template issues."""
     detector = TemplateDetector()
     
-    # Read file
+    # Step 1: Read file
+    start_time = time.time()
     path = Path(file_path)
     try:
         with open(path, 'r', encoding='utf-8') as f:
             content = f.read()
+        elapsed = time.time() - start_time
     except UnicodeDecodeError:
         click.echo("Error: File encoding not supported. Please use UTF-8", err=True)
         sys.exit(1)
@@ -188,33 +190,54 @@ def check(file_path: str, template: Optional[str]):
         click.echo(f"Error reading file: {e}", err=True)
         sys.exit(1)
     
-    # Auto-detect if not specified
+    # Step 2: Auto-detect template
     if not template:
         from .templates import detect_template_from_text
         template = detect_template_from_text(content)
         if template:
-            click.echo(f"Auto-detected template: {template}")
+            click.echo(f"1: [{elapsed:.1f}s] Analyzing file, detected template: {template}")
         else:
-            click.echo("Could not auto-detect template. Please specify with --template")
+            click.echo("Error: Could not auto-detect template. Please specify with --template")
             sys.exit(1)
+    else:
+        click.echo(f"1: [{elapsed:.1f}s] Analyzing file with template: {template}")
     
-    # Analyze
+    # Step 3: Analyze
+    start_time = time.time()
     mismatches = detector.analyze_formatted_text(content, template)
+    elapsed = time.time() - start_time
     
     # Output
-    click.echo(f"\nAnalyzing file with template: {template}")
-    click.echo("-" * 60)
+    has_errors = any(m.severity == "error" for m in mismatches)
+    has_warnings = any(m.severity == "warning" for m in mismatches)
+    
     if not mismatches:
-        click.echo(click.style("No issues found", fg="green"))
+        click.echo(f"2: [{elapsed:.1f}s] Checking template compliance")
+        click.echo("3: Results: No issues found")
     else:
-        for mismatch in mismatches:
-            color = {
-                "error": "red",
-                "warning": "yellow",
-                "info": "green"
-            }.get(mismatch.severity, "white")
-            click.echo(click.style(str(mismatch), fg=color))
-    click.echo("-" * 60)
+        click.echo(f"2: [{elapsed:.1f}s] Checking template compliance")
+        if has_errors:
+            click.echo("3: Results: Issues found")
+        else:
+            click.echo("3: Results: Warnings found")
+        
+        # Show errors
+        errors = [m for m in mismatches if m.severity == "error"]
+        if errors:
+            for e in errors:
+                click.echo(click.style(f"   Error: {e.message}", fg="red"))
+        
+        # Show warnings
+        warnings = [m for m in mismatches if m.severity == "warning"]
+        if warnings:
+            for w in warnings:
+                click.echo(click.style(f"   Warning: {w.message}", fg="white", dim=True))
+    
+    # Exit code
+    if has_errors:
+        sys.exit(1)
+    else:
+        sys.exit(0)
 
 
 if __name__ == "__main__":

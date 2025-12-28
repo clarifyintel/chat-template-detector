@@ -1,0 +1,4 @@
+<|im_start|>user
+Hello, how are you?
+<|im_start|>assistant
+I'm doing well, thank you!

@@ -22,10 +22,13 @@ chat-template-detector validate \
   --training-file train.jsonl \
   --inference-config config.yaml
 
-# Check specific model template
-chat-template-detector check \
-  --model meta-llama/Llama-2-7b-chat-hf \
-  --training-file train.jsonl
+# Validate against a specific model
+chat-template-detector validate \
+  --training-file train.jsonl \
+  --model meta-llama/Llama-2-7b-chat-hf
+
+# Check a single formatted text file
+chat-template-detector check samples/sample_chatml.txt
 ```
 
 ## Common Issues Detected
@@ -60,4 +63,4 @@ MIT License - see [LICENSE](LICENSE) for details
 
 ## Author
 
-Built by [ClarifyIntel](https://clarifyintel.com) - Making AI and DevOps accessible
+Built by [ClarifyIntel](https://clarifyintel.com) - We clarify complex tech. Kubernetes, AI/ML, DevOps, Security — we write, we teach, we solve.
